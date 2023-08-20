@@ -2,6 +2,29 @@ import React, { useState, useContext } from "react";
 import { v4 as uuidv4 } from "uuid";
 import useLocalStorage from "../hooks/useLocalStorage";
 
+// Default-budget
+const defaultBudget = [
+  { id: 1, name: " budget-default-1", max: 500 },
+  { id: 2, name: " budget-default-2", max: 1000 },
+];
+// default-expense
+const defaultExpenseBudget = [
+  { id: 1, budgetId: 1, description: " expense-default-1", amount: 250 },
+  { id: 2, budgetId: 2, description: " expense-default-2", amount: 400 },
+  {
+    id: 3,
+    budgetId: "Uncategorized",
+    description: " expense-default-uncategorized-1",
+    amount: 400,
+  },
+  {
+    id: 4,
+    budgetId: "Uncategorized",
+    description: " expense-default-uncategorized-2",
+    amount: 100,
+  },
+];
+
 const BudgetsContext = React.createContext();
 
 export const UNCATEGORIZED_BUDGET_ID = "Uncategorized";
@@ -11,8 +34,11 @@ export function useBudget() {
 }
 
 export const BudgetsProvider = ({ children }) => {
-  const [budgets, setBudget] = useLocalStorage("budgets", []);
-  const [expenses, setExpenses] = useLocalStorage("expenses", []);
+  const [budgets, setBudget] = useLocalStorage("budgets", defaultBudget);
+  const [expenses, setExpenses] = useLocalStorage(
+    "expenses",
+    defaultExpenseBudget
+  );
 
   const getBudgetExpenses = (budgetId) => {
     return expenses.filter((data) => data.budgetId === budgetId);
